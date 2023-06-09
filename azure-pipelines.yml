@@ -49,9 +49,9 @@ steps:
 - task: AzureWebApp@1
   displayName: 'Deploy to Azure App Service'
   inputs:
-    azureSubscription: {YOUR_AZURE_SUBSCRIPTION}
-    resourceGroupName: {YOUR_RESOURCE_GROUP_NAME}
+    azureSubscription: $(YOUR_AZURE_SUBSCRIPTION)
+    resourceGroupName: $(YOUR_RESOURCE_GROUP_NAME)
     appType: 'webApp'
-    appName: {YOUR_APP_NAME}
+    appName: $(YOUR_APP_NAME)
     package: '$(Build.ArtifactStagingDirectory)/drop'
     deploymentMethod: 'auto'
