@@ -60,11 +60,11 @@ jobs:
         id: create-app-service
         run: |
           az webapp create \
-            --name code2cloud_app \
+            --name code2cloudapp \
             --resource-group ${{ steps.create-resource-group.outputs.resource-group }} \
             --plan ${{ steps.create-app-service-plan.outputs.app-service-plan }} \
             --runtime "NODE:18LTS"
-          echo "::set-output name=app-service-name::code2cloud_app"
+          echo "::set-output name=app-service-name::code2cloudapp"
 
       - name: 'Generate Publish Profile'
         id: generate-publish-profile
