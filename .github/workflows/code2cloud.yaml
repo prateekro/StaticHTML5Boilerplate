@@ -80,5 +80,5 @@ jobs:
         with:
           app-name: ${{ steps.create-app-service.outputs.app-service-name }}
           publish-profile: ${{ steps.generate-publish-profile.outputs.publish-profile }}
-          package: ${{ github.workspace }}/drop
+          package: ${{ github.workspace }}
           resource-group-name: ${{ steps.create-resource-group.outputs.resource-group }}
