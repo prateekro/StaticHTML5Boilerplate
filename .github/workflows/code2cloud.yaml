@@ -1,0 +1,80 @@
+name: GitHub Actions Workflow
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Copy Files to Artifact Staging Directory'
+        uses: actions/checkout@v2
+
+      - name: 'Copy Files'
+        run: |
+          cp .gitignore ${{ github.workspace }}
+          cp README.md ${{ github.workspace }}
+          cp favicon.ico ${{ github.workspace }}
+          cp -R icons/**/*.png ${{ github.workspace }}
+          cp index.html ${{ github.workspace }}
+          cp -R public/**/*.css ${{ github.workspace }}
+          cp -R public/**/*.js ${{ github.workspace }}
+          cp -R public/**/*.png ${{ github.workspace }}
+
+      - name: 'Publish Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'drop'
+          path: ${{ github.workspace }}
+
+      - name: 'Create Azure Resource Group'
+        id: create-resource-group
+        run: |
+          az group create \
+            --name ${{ secrets.YOUR_RESOURCE_GROUP_NAME }} \
+            --location eastus
+          echo "::set-output name=resource-group::your-resource-group-name"
+
+      - name: 'Create Azure App Service Plan'
+        id: create-app-service-plan
+        run: |
+          az appservice plan create \
+            --name code2cloud \
+            --resource-group ${{ steps.create-resource-group.outputs.resource-group }} \
+            --sku B1 \
+            --is-linux
+          echo "::set-output name=app-service-plan::your-app-service-plan"
+
+      - name: 'Create Azure App Service'
+        id: create-app-service
+        run: |
+          az webapp create \
+            --name your-app-service-name \
+            --resource-group ${{ steps.create-resource-group.outputs.resource-group }} \
+            --plan ${{ steps.create-app-service-plan.outputs.app-service-plan }} \
+            --runtime "NODE:18LTS"
+          echo "::set-output name=app-service-name::your-app-service-name"
+
+      - name: 'Generate Publish Profile'
+        id: generate-publish-profile
+        run: |
+          az webapp deployment list-publishing-profiles \
+            --name ${{ steps.create-app-service.outputs.app-service-name }} \
+            --resource-group ${{ steps.create-resource-group.outputs.resource-group }} \
+            --xml
+          echo "::set-output name=publish-profile::$(az webapp deployment list-publishing-profiles --name ${{ steps.create-app-service.outputs.app-service-name }} --resource-group ${{ steps.create-resource-group.outputs.resource-group }} --xml)"
+
+      - name: 'Deploy to Azure App Service'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ steps.create-app-service.outputs.app-service-name }}
+          publish-profile: ${{ steps.generate-publish-profile.outputs.publish-profile }}
+          package: ${{ github.workspace }}/drop
+          azureSubscription: ${{ secrets.YOUR_AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ steps.create-resource-group.outputs.resource-group }}
