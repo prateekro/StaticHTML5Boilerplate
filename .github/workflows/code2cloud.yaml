@@ -81,5 +81,4 @@ jobs:
           app-name: ${{ steps.create-app-service.outputs.app-service-name }}
           publish-profile: ${{ steps.generate-publish-profile.outputs.publish-profile }}
           package: ${{ github.workspace }}/drop
-          azureSubscription: ${{ secrets.YOUR_AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ steps.create-resource-group.outputs.resource-group }}
+          resource-group-name: ${{ steps.create-resource-group.outputs.resource-group }}
