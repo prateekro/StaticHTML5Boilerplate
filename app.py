@@ -10,3 +10,10 @@ def index():
 @app.route('/hello', methods=['POST'])
 def hello():
    name = request.form.get('name')
+
+@app.route('/test', methods=['GET'])
+def hellotest():
+   return "Hello World"
+   
+if __name__ == '__main__':
+    app.run()
