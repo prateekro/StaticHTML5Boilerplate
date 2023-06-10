@@ -16,16 +16,16 @@ jobs:
       - name: 'Copy Files to Artifact Staging Directory'
         uses: actions/checkout@v2
 
-      - name: 'Copy Files'
-        run: |
-          cp .gitignore ${{ github.workspace }}
-          cp README.md ${{ github.workspace }}
-          cp favicon.ico ${{ github.workspace }}
-          cp -R icons/**/*.png ${{ github.workspace }}
-          cp index.html ${{ github.workspace }}
-          cp -R public/**/*.css ${{ github.workspace }}
-          cp -R public/**/*.js ${{ github.workspace }}
-          cp -R public/**/*.png ${{ github.workspace }}
+#       - name: 'Copy Files'
+#         run: |
+#           cp .gitignore ${{ github.workspace }}
+#           cp README.md ${{ github.workspace }}
+#           cp favicon.ico ${{ github.workspace }}
+#           cp -R icons/**/*.png ${{ github.workspace }}
+#           cp index.html ${{ github.workspace }}
+#           cp -R public/**/*.css ${{ github.workspace }}
+#           cp -R public/**/*.js ${{ github.workspace }}
+#           cp -R public/**/*.png ${{ github.workspace }}
 
       - name: 'Publish Artifact'
         uses: actions/upload-artifact@v2
