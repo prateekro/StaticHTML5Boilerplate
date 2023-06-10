@@ -63,7 +63,7 @@ jobs:
             --name code2cloudapp \
             --resource-group ${{ steps.create-resource-group.outputs.resource-group }} \
             --plan ${{ steps.create-app-service-plan.outputs.app-service-plan }} \
-            --runtime "NODE:18LTS"
+            --runtime "PYTHON:3.11"
           echo "::set-output name=app-service-name::code2cloudapp"
 
       - name: 'Generate Publish Profile'
