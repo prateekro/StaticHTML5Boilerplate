@@ -50,21 +50,21 @@ jobs:
         id: create-app-service-plan
         run: |
           az appservice plan create \
-            --name code2cloud \
+            --name code2cloud_plan \
             --resource-group ${{ steps.create-resource-group.outputs.resource-group }} \
             --sku B1 \
             --is-linux
-          echo "::set-output name=app-service-plan::your-app-service-plan"
+          echo "::set-output name=app-service-plan::code2cloud_plan"
 
       - name: 'Create Azure App Service'
         id: create-app-service
         run: |
           az webapp create \
-            --name code2cloud \
+            --name code2cloud_app \
             --resource-group ${{ steps.create-resource-group.outputs.resource-group }} \
             --plan ${{ steps.create-app-service-plan.outputs.app-service-plan }} \
             --runtime "NODE:18LTS"
-          echo "::set-output name=app-service-name::code2cloud"
+          echo "::set-output name=app-service-name::code2cloud_app"
 
       - name: 'Generate Publish Profile'
         id: generate-publish-profile
