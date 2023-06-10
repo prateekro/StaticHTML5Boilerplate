@@ -75,6 +75,9 @@ jobs:
             --xml
           echo "::set-output name=publish-profile::$(az webapp deployment list-publishing-profiles --name ${{ steps.create-app-service.outputs.app-service-name }} --resource-group ${{ steps.create-resource-group.outputs.resource-group }} --xml)"
 
+      - name: Printing the path of drop
+        run: echo ${{ github.workspace }} | ls
+
       - name: 'Deploy to Azure App Service'
         uses: azure/webapps-deploy@v2
         with:
