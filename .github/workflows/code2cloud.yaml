@@ -44,7 +44,7 @@ jobs:
           az group create \
             --name ${{ secrets.YOUR_RESOURCE_GROUP_NAME }} \
             --location eastus
-          echo "::set-output name=resource-group::your-resource-group-name"
+          echo "::set-output name=resource-group::${{ secrets.YOUR_RESOURCE_GROUP_NAME }}"
 
       - name: 'Create Azure App Service Plan'
         id: create-app-service-plan
@@ -60,11 +60,11 @@ jobs:
         id: create-app-service
         run: |
           az webapp create \
-            --name your-app-service-name \
+            --name code2cloud \
             --resource-group ${{ steps.create-resource-group.outputs.resource-group }} \
             --plan ${{ steps.create-app-service-plan.outputs.app-service-plan }} \
             --runtime "NODE:18LTS"
-          echo "::set-output name=app-service-name::your-app-service-name"
+          echo "::set-output name=app-service-name::code2cloud"
 
       - name: 'Generate Publish Profile'
         id: generate-publish-profile
